@@ -748,8 +748,8 @@
            (throw e)))))))
 
 (defn- wrap-special-fns
-  [wfn fns]
   "Wrap wfn around all (fn) values in fns hashmap."
+  [wfn fns]
   (into {} (for [[k v] fns] [k (wfn v)])))
 
 (def default-special-fns
