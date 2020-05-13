@@ -613,9 +613,10 @@
 (def ^:private USER-HOME-WRITABLE
   (delay (.canWrite (io/file (System/getProperty "user.home")))))
 
-(defn- aot-cache? [opts]
-  "Returns true if compilation artifacts shuold be placed in the
+(defn- aot-cache?
+  "Returns true if compilation artifacts should be placed in the
   shared AOT cache."
+  [opts]
   (and (:aot-cache opts)
        @USER-HOME-WRITABLE))
 
@@ -1141,7 +1142,7 @@
   list of inputs where the preloaded namespaces and their deps come immediately after
   cljs.core or the constants table depending on the optimization setting. Any
   files needing copying or compilation will be compiled and/or copied to the
-  appropiate location."
+  appropriate location."
   [inputs opts]
   (if-not (:preloads opts)
     inputs
@@ -3239,7 +3240,7 @@
    cljs.closure/build in addition to some watch-specific options:
     - :watch-fn, a function of no arguments to run after a successful build. May
                  be a function value or a namespaced symbol identifying a function,
-                 in which case the associated namespace willl be loaded and the
+                 in which case the associated namespace will be loaded and the
                  symbol resolved.
     - :watch-error-fn, a function receiving the exception of a failed build. May
                        be a function value or a namespaced symbol, loaded as
