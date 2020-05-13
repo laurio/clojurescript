@@ -97,10 +97,11 @@
             (into files))))
       [])))
 
-(defn find-js-resources [path]
+(defn find-js-resources
   "Returns a seq of URLs to all JavaScript resources on the classpath or within
 a given (directory) path on the filesystem. [path] only applies to the latter
 case."
+  [path]
   (let [file (io/file path)]
     (if (.exists file)
       (find-js-fs path)
@@ -156,7 +157,7 @@ case."
 
 (defn build-index
   "Index a list of dependencies by namespace and file name. There can
-  be zero or more namespaces provided per file. Upstream foreign libraies
+  be zero or more namespaces provided per file. Upstream foreign libraries
   will have their options merged with local foreign libraries to support
   fine-grained overriding."
   [deps]

@@ -99,19 +99,22 @@
         [acc context]
         (recur new-context (conj acc result))))))
 
-(defn- unzip-map [m]
+(defn- unzip-map
   "Take a  map that has pairs in the value slots and produce a pair of maps,
    the first having all the first elements of the pairs and the second all
    the second elements of the pairs"
+  [m]
   [(into {} (for [[k [v1 v2]] m] [k v1]))
    (into {} (for [[k [v1 v2]] m] [k v2]))])
 
-(defn- tuple-map [m v1]
+(defn- tuple-map
   "For all the values, v, in the map, replace them with [v v1]"
+  [m v1]
   (into {} (for [[k v] m] [k [v v1]])))
 
-(defn- rtrim [s c]
+(defn- rtrim
   "Trim all instances of c from the end of sequence s"
+  [s c]
   (let [len (count s)]
     (if (and (pos? len) (= (nth s (dec (count s))) c))
       (loop [n (dec len)]
@@ -121,8 +124,9 @@
           true (recur (dec n))))
       s)))
 
-(defn- ltrim [s c]
+(defn- ltrim
   "Trim all instances of c from the beginning of sequence s"
+  [s c]
   (let [len (count s)]
     (if (and (pos? len) (= (nth s 0) c))
       (loop [n 0]
@@ -131,10 +135,11 @@
           (recur (inc n))))
       s)))
 
-(defn- prefix-count [aseq val]
+(defn- prefix-count
   "Return the number of times that val occurs at the start of sequence aseq,
 if val is a seq itself, count the number of times any element of val occurs at the
 beginning of aseq"
+  [aseq val]
   (let [test (if (coll? val) (set val) #{val})]
     (loop [pos 0]
       (if (or (= pos (count aseq)) (not (test (nth aseq pos))))
@@ -2204,7 +2209,7 @@ not a pretty writer (which keeps track of columns), this function always outputs
      :commainterval [3 js/Number]]
     #{:at :colon :both} {}
     (do
-      (cond                          ; ~R is overloaded with bizareness
+      (cond                          ; ~R is overloaded with bizarreness
         (first (:base params))     #(format-integer (:base %1) %1 %2 %3)
         (and (:at params) (:colon params))   #(format-old-roman %1 %2 %3)
         (:at params)               #(format-new-roman %1 %2 %3)
@@ -2288,7 +2293,7 @@ not a pretty writer (which keeps track of columns), this function always outputs
         (print (apply str (repeat n \~)))
         arg-navigator)))
 
-  (\newline ;; Whitespace supression is handled in the compilation loop
+  (\newline ;; Whitespace suppression is handled in the compilation loop
     []
     #{:colon :at} {}
     (fn [params arg-navigator offsets]

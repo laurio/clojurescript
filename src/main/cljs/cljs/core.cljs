@@ -2188,7 +2188,7 @@ reduces them without incurring seq initialization"
 
 ;;;;;;;;;;;;;;;;;;;; js primitives ;;;;;;;;;;;;
 (defn js-obj
-  "Create JavaSript object from an even number arguments representing
+  "Create JavaScript object from an even number arguments representing
   interleaved keys and values."
   ([]
      (cljs.core/js-obj))

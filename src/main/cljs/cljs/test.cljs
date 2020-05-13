@@ -280,8 +280,9 @@
 (defn clear-env! []
   (set! *current-env* nil))
 
-(defn get-and-clear-env! []
+(defn get-and-clear-env!
   "Like get-current-env, but cleans env before returning."
+  []
   (let [env (cljs.test/get-current-env)]
     (clear-env!)
     env))
@@ -363,11 +364,12 @@
 ;; =============================================================================
 ;; File, Line, and Column Helpers
 
-(defn js-line-and-column [stack-element]
+(defn js-line-and-column
   "Returns a 2-element vector containing the line and
   column encoded at the end of a stack element string.
   A line or column will be represented as NaN if not
-  parsesable."
+  parsable."
+  [stack-element]
   (let [parts (.split stack-element ":")
         cnt   (count parts)]
     (if (> cnt 1)

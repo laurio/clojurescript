@@ -944,9 +944,10 @@
     t
     #{t}))
 
-(defn canonicalize-type [t]
+(defn canonicalize-type
   "Ensures that a type tag is either nil, a type symbol, or a non-singleton
   set of type symbols, absorbing clj-nil into seq and all types into any."
+  [t]
   (cond
     (symbol? t) t
     (empty? t) nil
@@ -3090,7 +3091,7 @@
          (when (some (complement util/valid-js-id-start?) segments)
            (throw
              (AssertionError.
-               (str "Namespace " name " has a segment starting with an invaild "
+               (str "Namespace " name " has a segment starting with an invalid "
                     "JavaScript identifier"))))))
     (let [docstring    (when (string? (first args)) (first args))
           mdocstr      (-> name meta :doc)
@@ -4067,7 +4068,7 @@
 
 (defn analyze-record
   [env x]
-  (let [;; register constansts
+  (let [;; register constants
         _items_   (disallowing-recur
                     (analyze (assoc env :context :expr) (into {} x)))
         [ns name] (record-ns+name x)]
