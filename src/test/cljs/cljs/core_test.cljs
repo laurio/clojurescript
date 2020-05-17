@@ -1811,3 +1811,8 @@
 (deftest test-cljs-3202
   (is (= :/ (keyword "/")))
   (is (= (hash :/) (hash (keyword "/")))))
+
+(deftest test-cljs-3187
+  (is (= (re-seq #"^[a-f]+" "aabcded") '("aabcded")))
+  (is (= (re-seq #"^[a-f]" "aabcded") '("a")))
+  (is (= (re-seq #"[a-f]" "aabcded") '("a" "a" "b" "c" "d" "e" "d"))))

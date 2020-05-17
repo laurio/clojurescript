@@ -10012,23 +10012,29 @@ reduces them without incurring seq initialization"
     (throw (js/TypeError. "re-find must match against a string."))))
 
 (defn- re-seq* [re s]
-  (when-some [matches (.exec re s)]
-    (let [match-str (aget matches 0)
-          match-vals (if (== (.-length matches) 1)
-                       match-str
-                       (vec matches))]
-      (cons match-vals
-            (lazy-seq
-             (let [post-idx (+ (.-index matches)
-                               (max 1 (.-length match-str)))]
-               (when (<= post-idx (.-length s))
-                 (re-seq* re (subs s post-idx)))))))))
+  (when-let [matches (.exec re s)]
+    (cons (if (== (.-length matches) 1)
+            (aget matches 0)
+            (vec matches))
+          (lazy-seq
+            (let [last-index (.-lastIndex re)]
+              (when (== last-index (.-index matches))
+                ;; avoid an infinite loop with zero-length matches
+                (set! (.-lastIndex re) (+ last-index 1))))
+            (re-seq* re s)))))
+
+(defn- with-global-regex-flag [re]
+  (let [flags (.-flags re)]
+    (cond
+      (empty? flags) (js/RegExp. re "g")
+      (gstring/contains flags "g") re
+      :else (js/RegExp. re (str "g" flags)))))
 
 (defn re-seq
   "Returns a lazy sequence of successive matches of re in s."
   [re s]
   (if (string? s)
-    (re-seq* re s)
+    (re-seq* (with-global-regex-flag re) s)
     (throw (js/TypeError. "re-seq must match against a string."))))
 
 (defn re-pattern
